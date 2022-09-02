@@ -6,35 +6,36 @@ import tweepy
 # Pegando a consulta por parâmetro
  
 #Autenticações
-consumer_key = ''
-consumer_secret = ''
-access_token = ''
-access_token_secret = ''
- 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
+consumer_key = 'GvDlyVuSK85rhHZcEFgPZrA6U'
+consumer_secret = 'js5ZHqhZqNn2llDbo3ftoHr3T4ukUF86llpAw6S72IB2sFm7jg'
+access_token = '37265390-Mp1gMvVk4uOTigJ0dq8XeZ8FlR8YX72h9VWFqPs5C'
+access_token_secret = 'HbdMugYjUOyDwBycygqsDI4x6CstgkZLrL8dDhkEzo6Mi'
  
 #Coletando tweets
-class CustomStreamListener(tweepy.StreamListener):
+class dados(tweepy.Stream):
  
-  def on_status(self, tweet):
+  def on_status(self, status):
     #Quando receber algum status, esta função pode manipular o objeto tweet. Exemplos:
-    print tweet.author.screen_name
-    print tweet.text.encode('utf-8')
-    api.create_favorite(tweet.id)
+    print(status.user.screen_name)
+    print(status.text.encode('utf-8'))
+    #api.create_favorite(status.id)
  
     return True
  
   def on_error(self, status_code):
-      print "Erro com o código:", status_code
+      print ("Erro com o código:", status_code)
       return True # Não mata o coletor
  
   def on_timeout(self):
-      print "Tempo esgotado!"
+      print ("Tempo esgotado!")
       return True # Não mata o coletor
 
-consulta = "Fatec"
-#Criando o coletor com timeout de 60 seg
-streaming_api = tweepy.streaming.Stream(auth, CustomStreamListener(), timeout=60)
-streaming_api.filter(follow=None, track=consulta, languages=["pt"])
+dado = dados (
+    consumer_key, consumer_secret,
+    access_token, access_token_secret
+)
+
+try:
+    dado.filter(track=["fatec", "brasil"], languages=["pt"])
+except:
+    print("falhou")
